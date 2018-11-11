@@ -143,6 +143,209 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Android-SdkVersion" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/31/Android-SdkVersion/">如何选择compileSdkVersion,minSdkVersion和targetSdkVersion</a>
+    </h1>
+  
+
+        
+        <a href="/2016/03/31/Android-SdkVersion/" class="archive-article-date">
+  	<time datetime="2016-03-31T12:05:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>原文 <a href="https://medium.com/google-developers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd#.gik7kj532" target="_blank" rel="noopener">https://medium.com/google-developers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd#.gik7kj532</a><br>作者 <a href="https://medium.com/@ianhlake" target="_blank" rel="noopener">Ian Lake</a></p>
+</blockquote>
+<p><img src="http://7xrcq5.com1.z0.glb.clouddn.com/android_target_sdk_version.png" alt=""></p>
+<p>当你发布一个应用之后，可能没过几个月Android系统就发布了一个新版本。这对你的应用意味着什么？所有东西都不能用了？</p>
+<p>别提心，<strong>向前兼容</strong>是Android非常关注的事情。用户在升级到新版Android的时候，用以前版本的SDK构建的现有应用应该不会出问题。这就是<strong>compileSdkVersion</strong>,<strong>minSdkVersion</strong>和<strong>targetSdkVersion</strong>的作用：它们分别控制可以使用哪些API，要求的API级别是什么，以及应用的兼容模式。</p>
+        
+          <a class="article-more-a" href="/2016/03/31/Android-SdkVersion/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">sdk-version</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/03/31/Android-SdkVersion/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Java-ClassLoader" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/15/Java-ClassLoader/">深入分析Java ClassLoader原理</a>
+    </h1>
+  
+
+        
+        <a href="/2016/03/15/Java-ClassLoader/" class="archive-article-date">
+  	<time datetime="2016-03-15T07:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>原文链接 <a href="http://blog.csdn.net/xyang81/article/details/7292380" target="_blank" rel="noopener">http://blog.csdn.net/xyang81/article/details/7292380</a><br>作者 xyang0917<br>内容有改动</p>
+</blockquote>
+<h2 id="什么是ClassLoader"><a href="#什么是ClassLoader" class="headerlink" title="什么是ClassLoader"></a>什么是ClassLoader</h2><p>大家都知道，当我们写好一个Java程序之后，不管是CS还是BS应用，都是由若干个.class文件组织而成的一个完整的Java应用程序，当程序在运行时，即会调用该程序的一个入口函数来调用系统的相关功能，而这些功能都被封装在不同的class文件当中，所以经常要从这个class文件中调用另外一个class文件中的方法，如果另外一个文件不存在，则会引发系统异常。而程序在启动的时候，并不会一次性加载程序所要用的所有class文件，而是根据程序的需要，通过Java的类加载机制（ClassLoader）来动态加载某个class文件到内存当中的，从而只有class文件被载入到了内存之后，才能被其它class所引用。所以ClassLoader就是用来动态加载class文件到内存当中用的。</p>
+<h2 id="Java默认提供三个ClassLoader"><a href="#Java默认提供三个ClassLoader" class="headerlink" title="Java默认提供三个ClassLoader"></a>Java默认提供三个ClassLoader</h2><ul>
+<li>BootStrap ClassLoader：称为启动类加载器，是Java类加载层次中最顶层的类加载器，<strong>负责加载JDK中的核心类库，如：rt.jar、resources.jar、charsets.jar等</strong>，可通过如下程序获得该类加载器从哪些地方加载了相关的jar或class文件：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		URL[] urls = sun.misc.Launcher.getBootstrapClassPath().getURLs();  </span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; urls.length; i++) &#123;  </span><br><span class="line">		    System.out.println(urls[i].toExternalForm());  </span><br><span class="line">		&#125;  </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意以上代码如果在IDE中可能会有编译异常，通过<code>javac HelloWorld.java</code>编译会有一个警告，但不影响运行。</p>
+<p>以下内容是上述程序从本机JDK环境所获得的结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/resources.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/rt.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/sunrsasign.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/jsse.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/jce.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/charsets.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/jfr.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/classes</span><br></pre></td></tr></table></figure>
+<p>其实上述结果也是通过查找<strong>sun.boot.class.path</strong>这个系统属性所得知的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(System.getProperty(<span class="string">"sun.boot.class.path"</span>));</span><br></pre></td></tr></table></figure>
+<p>打印结果：<code>C:\Program Files\Java\jdk1.7.0_79\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_79\jre\classes</code></p>
+<ul>
+<li><p>Extension ClassLoader：称为扩展类加载器，负责加载Java的扩展类库，默认加载JAVA_HOME/jre/lib/ext目录下的所有jar。</p>
+</li>
+<li><p>App ClassLoader：称为系类加载器，负责加载应用程序classpath目录下的所有jar和class文件。</p>
+</li>
+</ul>
+<p><strong>注意</strong>除了Java默认提供的三个ClassLoader之外，用户还可以根据需要定义自已的ClassLoader，而这些自定义的ClassLoader都必须继承自java.lang.ClassLoader类，也包括Java提供的另外二个ClassLoader（Extension ClassLoader和App ClassLoader）在内，但是Bootstrap ClassLoader不继承自ClassLoader，因为它不是一个普通的Java类，底层由C++编写，已嵌入到了JVM内核当中，当JVM启动后，Bootstrap ClassLoader也随着启动，负责加载完核心类库后，并构造Extension ClassLoader和App ClassLoader类加载器。</p>
+        
+          <a class="article-more-a" href="/2016/03/15/Java-ClassLoader/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ClassLoader</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/03/15/Java-ClassLoader/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Java_HashMap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -949,199 +1152,6 @@
 
 
   
-    <article id="post-ReadWriteLock" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/29/ReadWriteLock/">ReadWriteLock</a>
-    </h1>
-  
-
-        
-        <a href="/2016/02/29/ReadWriteLock/" class="archive-article-date">
-  	<time datetime="2016-02-29T05:03:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-02-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>java.util.concurrent.locks.ReadWriteLock 是一个高级的线程锁机制，它允许多个线程来读取一个特定的资源，但在同一时间，只有能一个线程执行写操作。<br>一个ReadWriteLock中保持一对相关的锁，一个用于只读操作，另一个用于写操作。在没有写操作的情况下，读锁(read lock)可以同时被多个线程执行。写锁(write lock)是排它性的。在成功获取读锁后所读到的数据都是最新的。</p>
-<ul>
-<li>读锁可以允许多个进行读操作的线程同时进入，但不允许写进程进入</li>
-<li>写锁只允许一个写进程进入，在这期间任何线程都不能再进入</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteLockTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Queue3 q3 = <span class="keyword">new</span> Queue3();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="string">"Read Thread-"</span> + i) &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                        q3.get();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;.start();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="string">"Write Thread-"</span> + i) &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                        q3.put(<span class="keyword">new</span> Random().nextInt(<span class="number">10000</span>));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Queue3</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> Object data = <span class="keyword">null</span>;</span><br><span class="line">        ReadWriteLock rwl = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            rwl.readLock().lock();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" is ready to read data"</span>);</span><br><span class="line">                Thread.sleep((<span class="keyword">long</span>) (Math.random() * <span class="number">1000</span>));</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" has been read data : "</span> + data);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                rwl.readLock().unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Object data)</span> </span>&#123;</span><br><span class="line">            rwl.writeLock().lock();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" is ready to write data"</span>);</span><br><span class="line">                Thread.sleep((<span class="keyword">long</span>) (Math.random() * <span class="number">1000</span>));</span><br><span class="line">                <span class="keyword">this</span>.data = data;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" has been write data : "</span> + data);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                rwl.writeLock().unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Read Thread-<span class="number">0</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">1</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">2</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">2</span> has been read data : <span class="keyword">null</span></span><br><span class="line">Read Thread-<span class="number">1</span> has been read data : <span class="keyword">null</span></span><br><span class="line">Read Thread-<span class="number">0</span> has been read data : <span class="keyword">null</span></span><br><span class="line">Write Thread-<span class="number">0</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">0</span> has been write data : <span class="number">577</span></span><br><span class="line">Write Thread-<span class="number">0</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">0</span> has been write data : <span class="number">8005</span></span><br><span class="line">Write Thread-<span class="number">2</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">2</span> has been write data : <span class="number">8935</span></span><br><span class="line">Write Thread-<span class="number">2</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">2</span> has been write data : <span class="number">0</span></span><br><span class="line">Write Thread-<span class="number">2</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">2</span> has been write data : <span class="number">5878</span></span><br><span class="line">Write Thread-<span class="number">1</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">1</span> has been write data : <span class="number">963</span></span><br><span class="line">Write Thread-<span class="number">1</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">1</span> has been write data : <span class="number">4703</span></span><br><span class="line">Write Thread-<span class="number">1</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">1</span> has been write data : <span class="number">7550</span></span><br><span class="line">Read Thread-<span class="number">2</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">1</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">0</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">1</span> has been read data : <span class="number">7550</span></span><br><span class="line">Read Thread-<span class="number">2</span> has been read data : <span class="number">7550</span></span><br><span class="line">Read Thread-<span class="number">0</span> has been read data : <span class="number">7550</span></span><br><span class="line">Write Thread-<span class="number">0</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">0</span> has been write data : <span class="number">1733</span></span><br><span class="line">Write Thread-<span class="number">0</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">0</span> has been write data : <span class="number">6151</span></span><br></pre></td></tr></table></figure></p>
-        
-          <a class="article-more-a" href="/2016/02/29/ReadWriteLock/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Thread</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/02/29/ReadWriteLock/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Traditional-Thread" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/29/Traditional-Thread/">传统线程机制的回顾</a>
-    </h1>
-  
-
-        
-        <a href="/2016/02/29/Traditional-Thread/" class="archive-article-date">
-  	<time datetime="2016-02-28T16:02:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-02-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="传统线程机制的回顾"><a href="#传统线程机制的回顾" class="headerlink" title="传统线程机制的回顾"></a>传统线程机制的回顾</h2><h3 id="创建线程的两种传统方式"><a href="#创建线程的两种传统方式" class="headerlink" title="创建线程的两种传统方式"></a>创建线程的两种传统方式</h3><ul>
-<li>在Thread子类覆盖的run方法中编写运行代码</li>
-<li>在传递给Thread对象的Runnable对象的run方法中编写代码</li>
-</ul>
-<p>总结：查看Thread类的run方法的源代码可以看到，其实这两种方式都是在调用Thread对象的run方法，如果Thread类的run方法没有被覆盖，并且为该Thread对象设置了Runnable对象，该run方法会调用Runnable的run方法。</p>
-<p>问题：如果在Thread子类覆盖的run方法中编写了运行代码，也为Thread子类对象传递了一个Runnable对象，那么，线程运行时的执行代码是子类的run方法还是Runnable的run方法？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">	<span class="comment">/* What will be run. */</span></span><br><span class="line">    <span class="keyword">private</span> Runnable target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Thread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        init(<span class="keyword">null</span>, <span class="keyword">null</span>, <span class="string">"Thread-"</span> + nextThreadNum(), <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Thread</span><span class="params">(Runnable target)</span> </span>&#123;</span><br><span class="line">        init(<span class="keyword">null</span>, target, <span class="string">"Thread-"</span> + nextThreadNum(), <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ThreadGroup g, Runnable target, String name,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">long</span> stackSize)</span> </span>&#123;</span><br><span class="line">        init(g, target, name, stackSize, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ThreadGroup g, Runnable target, String name,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">long</span> stackSize, AccessControlContext acc)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (target != <span class="keyword">null</span>) &#123;</span><br><span class="line">            target.run();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="定时器的应用"><a href="#定时器的应用" class="headerlink" title="定时器的应用"></a>定时器的应用</h3><ul>
-<li>Time类</li>
-<li>TimeTask类</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for execution after the specified delay.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task, <span class="keyword">long</span> delay)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for execution at the specified time.  If</span></span><br><span class="line"><span class="comment"> * the time is in the past, the task is scheduled for immediate execution.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task, Date time)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for repeated &lt;i&gt;fixed-delay execution&lt;/i&gt;,</span></span><br><span class="line"><span class="comment"> * beginning after the specified delay.  Subsequent executions take place</span></span><br><span class="line"><span class="comment"> * at approximately regular intervals separated by the specified period.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task, <span class="keyword">long</span> delay, <span class="keyword">long</span> period)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for repeated &lt;i&gt;fixed-delay execution&lt;/i&gt;,</span></span><br><span class="line"><span class="comment"> * beginning at the specified time. Subsequent executions take place at</span></span><br><span class="line"><span class="comment"> * approximately regular intervals, separated by the specified period.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task, Date firstTime, <span class="keyword">long</span> period)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for repeated &lt;i&gt;fixed-rate execution&lt;/i&gt;,</span></span><br><span class="line"><span class="comment"> * beginning after the specified delay.  Subsequent executions take place</span></span><br><span class="line"><span class="comment"> * at approximately regular intervals, separated by the specified period.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduleAtFixedRate</span><span class="params">(TimerTask task, <span class="keyword">long</span> delay, <span class="keyword">long</span> period)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for repeated &lt;i&gt;fixed-rate execution&lt;/i&gt;,</span></span><br><span class="line"><span class="comment"> * beginning at the specified time. Subsequent executions take place at</span></span><br><span class="line"><span class="comment"> * approximately regular intervals, separated by the specified period.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduleAtFixedRate</span><span class="params">(TimerTask task, Date firstTime, <span class="keyword">long</span> period)</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="线程的互斥与同步"><a href="#线程的互斥与同步" class="headerlink" title="线程的互斥与同步"></a>线程的互斥与同步</h2><ul>
-<li>使用synchronized代码块及其原理</li>
-<li>使用synchronized方法(this)</li>
-<li>分析静态方法所使用的同步监视器是什么(class)<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraditionalThreadSynchronized</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">new</span> TraditionalThreadSynchronized().init();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> Outputer outputer = <span class="keyword">new</span> Outputer();</span><br><span class="line">		<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">					<span class="keyword">try</span> &#123;</span><br><span class="line">						Thread.sleep(<span class="number">10</span>);</span><br><span class="line">					&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">						<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">						e.printStackTrace();</span><br><span class="line">					&#125;</span><br><span class="line">					outputer.output(<span class="string">"hello"</span>);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;).start();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">					<span class="keyword">try</span> &#123;</span><br><span class="line">						Thread.sleep(<span class="number">10</span>);</span><br><span class="line">					&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">						<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">						e.printStackTrace();</span><br><span class="line">					&#125;</span><br><span class="line">					outputer.output3(<span class="string">"world"</span>);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;).start();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Outputer</span> </span>&#123;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">output</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">int</span> len = name.length();</span><br><span class="line">			<span class="keyword">synchronized</span> (Outputer.class) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">					System.out.print(name.charAt(i));</span><br><span class="line">				&#125;</span><br><span class="line">				System.out.println();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">output2</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">int</span> len = name.length();</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">				System.out.print(name.charAt(i));</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">output3</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">int</span> len = name.length();</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">				System.out.print(name.charAt(i));</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="wait与notify实现线程间的通信"><a href="#wait与notify实现线程间的通信" class="headerlink" title="wait与notify实现线程间的通信"></a>wait与notify实现线程间的通信</h3><p>子线程循环10次，接着主线程循环100次，接着又回到子线程循环10次，接着再回到主线程循环100次，如此循环50次。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraditionalThreadCommunication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">final</span> Business business = <span class="keyword">new</span> Business();</span><br><span class="line">		<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line"></span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">50</span>; i++) &#123;</span><br><span class="line">					business.sub(i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;).start();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">50</span>; i++) &#123;</span><br><span class="line">			business.main(i);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Business</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> bShouldSub = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">while</span> (!bShouldSub) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">this</span>.wait();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">10</span>; j++) &#123;</span><br><span class="line">			System.out.println(<span class="string">"sub thread sequence of "</span> + j + <span class="string">",loop of "</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">		bShouldSub = <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">this</span>.notify();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">while</span> (bShouldSub) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">this</span>.wait();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">100</span>; j++) &#123;</span><br><span class="line">			System.out.println(<span class="string">"main thread sequence of "</span> + j + <span class="string">",loop of "</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">		bShouldSub = <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">this</span>.notify();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Thead</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/02/29/Traditional-Thread/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -1235,14 +1245,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">targetSdkVersion</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
@@ -1251,15 +1253,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Android</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">targetSdkVersion</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Overloading</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Overriding</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1291,6 +1301,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">国际化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OpenVPN</a>
               </li>
              
@@ -1303,10 +1317,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">国际化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
@@ -1315,15 +1325,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JDK</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JDK</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1332,6 +1338,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Arithmetic</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1375,11 +1385,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Think in Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">events</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Think in Java</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1396,10 +1414,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Message</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">

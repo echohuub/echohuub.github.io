@@ -143,6 +143,209 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-android-change-language-in-app" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/26/android-change-language-in-app/">Android应用内国际化</a>
+    </h1>
+  
+
+        
+        <a href="/2017/02/26/android-change-language-in-app/" class="archive-article-date">
+  	<time datetime="2017-02-26T07:22:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近Android项目需要做国际化，支持多种语言，借此机会学习学习。</p>
+<p>我们首先看一下微信的。</p>
+<p>微信首页：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜ /Users/heqingbao adb shell dumpsys activity com.tencent.mm | grep -e <span class="string">'TASK'</span> -e <span class="string">"ACTIVITY"</span></span><br><span class="line">TASK com.tencent.mm id=1801</span><br><span class="line">  ACTIVITY com.tencent.mm/.ui.LauncherUI 25527ac4 pid=5962</span><br></pre></td></tr></table></figure>
+<p>进入到<code>多语言</code>设置页面后：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜ /Users/heqingbao adb shell dumpsys activity com.tencent.mm | grep -e <span class="string">'TASK'</span> -e <span class="string">"ACTIVITY"</span></span><br><span class="line">TASK com.tencent.mm id=1801</span><br><span class="line">  ACTIVITY com.tencent.mm/.plugin.setting.ui.setting.SettingsLanguageUI 1d07a70 pid=5962</span><br><span class="line">  ACTIVITY com.tencent.mm/.plugin.setting.ui.setting.SettingsAboutSystemUI 14ce296 pid=5962</span><br><span class="line">  ACTIVITY com.tencent.mm/.plugin.setting.ui.setting.SettingsUI 8f2316c pid=5962</span><br><span class="line">  ACTIVITY com.tencent.mm/.ui.LauncherUI 25527ac4 pid=5962</span><br></pre></td></tr></table></figure>
+<p>切换语言完成后：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜ /Users/heqingbao adb shell dumpsys activity com.tencent.mm | grep -e <span class="string">'TASK'</span> -e <span class="string">"ACTIVITY"</span></span><br><span class="line">TASK com.tencent.mm id=1805</span><br><span class="line">  ACTIVITY com.tencent.mm/.ui.LauncherUI 2a9c43ff pid=5962</span><br></pre></td></tr></table></figure>
+<p>注意上面打印的结果，切换语言后：</p>
+<ol>
+<li>栈里只保留了LauncherUI</li>
+<li>切换前后LauncherUI不是同一个对象。由<code>25527ac4</code>变成<code>2a9c43ff</code>。</li>
+<li>切换前后Task也不是同一个。由<code>1801</code>变成了<code>1805</code>。</li>
+</ol>
+<p>由此，我们至少获取了几点信息：</p>
+<ol>
+<li>微信切换语言后，会重建Task。</li>
+<li>各页面的名称<ul>
+<li>首页：com.tencent.mm.LauncherUI</li>
+<li>语言设置页：com.tencent.mm.SettingsLanguageUI</li>
+</ul>
+</li>
+</ol>
+        
+          <a class="article-more-a" href="/2017/02/26/android-change-language-in-app/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">国际化</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/02/26/android-change-language-in-app/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Load-External-SO-Library" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/26/Load-External-SO-Library/">Android加载外部SO库</a>
+    </h1>
+  
+
+        
+        <a href="/2017/02/26/Load-External-SO-Library/" class="archive-article-date">
+  	<time datetime="2017-02-26T03:52:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如何加载外部的so文件</p>
+<p>注意到我们一般加载so的方式是使用<code>System.loadLibrary(libname)</code>，同时我们发现<code>System</code>类还有一个<code>load</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Loads a code file with the specified filename from the local file</span></span><br><span class="line"><span class="comment"> * system as a dynamic library. The filename</span></span><br><span class="line"><span class="comment"> * argument must be a complete path name.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">load</span><span class="params">(String filename)</span> </span>&#123;</span><br><span class="line">    Runtime.getRuntime().load0(VMStack.getStackClass1(), filename);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Loads the system library specified by the &lt;code&gt;libname&lt;/code&gt;</span></span><br><span class="line"><span class="comment"> * argument. The manner in which a library name is mapped to the</span></span><br><span class="line"><span class="comment"> * actual system library is system dependent.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadLibrary</span><span class="params">(String libname)</span> </span>&#123;</span><br><span class="line">    Runtime.getRuntime().loadLibrary0(VMStack.getCallingClassLoader(), libname);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先看看loadLibrary，这里调用了Runtime的loadLibrary，进去一看又是熟悉的ClassLoader，这也说明so库的使用就是一种动态加载的过程。</p>
+        
+          <a class="article-more-a" href="/2017/02/26/Load-External-SO-Library/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jni</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/02/26/Load-External-SO-Library/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-android_load_so_library" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -892,209 +1095,6 @@
 
 
   
-    <article id="post-Android-SdkVersion" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/31/Android-SdkVersion/">如何选择compileSdkVersion,minSdkVersion和targetSdkVersion</a>
-    </h1>
-  
-
-        
-        <a href="/2016/03/31/Android-SdkVersion/" class="archive-article-date">
-  	<time datetime="2016-03-31T12:05:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>原文 <a href="https://medium.com/google-developers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd#.gik7kj532" target="_blank" rel="noopener">https://medium.com/google-developers/picking-your-compilesdkversion-minsdkversion-targetsdkversion-a098a0341ebd#.gik7kj532</a><br>作者 <a href="https://medium.com/@ianhlake" target="_blank" rel="noopener">Ian Lake</a></p>
-</blockquote>
-<p><img src="http://7xrcq5.com1.z0.glb.clouddn.com/android_target_sdk_version.png" alt=""></p>
-<p>当你发布一个应用之后，可能没过几个月Android系统就发布了一个新版本。这对你的应用意味着什么？所有东西都不能用了？</p>
-<p>别提心，<strong>向前兼容</strong>是Android非常关注的事情。用户在升级到新版Android的时候，用以前版本的SDK构建的现有应用应该不会出问题。这就是<strong>compileSdkVersion</strong>,<strong>minSdkVersion</strong>和<strong>targetSdkVersion</strong>的作用：它们分别控制可以使用哪些API，要求的API级别是什么，以及应用的兼容模式。</p>
-        
-          <a class="article-more-a" href="/2016/03/31/Android-SdkVersion/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">sdk-version</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/03/31/Android-SdkVersion/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Java-ClassLoader" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/15/Java-ClassLoader/">深入分析Java ClassLoader原理</a>
-    </h1>
-  
-
-        
-        <a href="/2016/03/15/Java-ClassLoader/" class="archive-article-date">
-  	<time datetime="2016-03-15T07:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>原文链接 <a href="http://blog.csdn.net/xyang81/article/details/7292380" target="_blank" rel="noopener">http://blog.csdn.net/xyang81/article/details/7292380</a><br>作者 xyang0917<br>内容有改动</p>
-</blockquote>
-<h2 id="什么是ClassLoader"><a href="#什么是ClassLoader" class="headerlink" title="什么是ClassLoader"></a>什么是ClassLoader</h2><p>大家都知道，当我们写好一个Java程序之后，不管是CS还是BS应用，都是由若干个.class文件组织而成的一个完整的Java应用程序，当程序在运行时，即会调用该程序的一个入口函数来调用系统的相关功能，而这些功能都被封装在不同的class文件当中，所以经常要从这个class文件中调用另外一个class文件中的方法，如果另外一个文件不存在，则会引发系统异常。而程序在启动的时候，并不会一次性加载程序所要用的所有class文件，而是根据程序的需要，通过Java的类加载机制（ClassLoader）来动态加载某个class文件到内存当中的，从而只有class文件被载入到了内存之后，才能被其它class所引用。所以ClassLoader就是用来动态加载class文件到内存当中用的。</p>
-<h2 id="Java默认提供三个ClassLoader"><a href="#Java默认提供三个ClassLoader" class="headerlink" title="Java默认提供三个ClassLoader"></a>Java默认提供三个ClassLoader</h2><ul>
-<li>BootStrap ClassLoader：称为启动类加载器，是Java类加载层次中最顶层的类加载器，<strong>负责加载JDK中的核心类库，如：rt.jar、resources.jar、charsets.jar等</strong>，可通过如下程序获得该类加载器从哪些地方加载了相关的jar或class文件：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		URL[] urls = sun.misc.Launcher.getBootstrapClassPath().getURLs();  </span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; urls.length; i++) &#123;  </span><br><span class="line">		    System.out.println(urls[i].toExternalForm());  </span><br><span class="line">		&#125;  </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意以上代码如果在IDE中可能会有编译异常，通过<code>javac HelloWorld.java</code>编译会有一个警告，但不影响运行。</p>
-<p>以下内容是上述程序从本机JDK环境所获得的结果：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/resources.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/rt.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/sunrsasign.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/jsse.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/jce.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/charsets.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/lib/jfr.jar</span><br><span class="line">file:/C:/Program%<span class="number">20F</span>iles/Java/jdk1.7.0_79/jre/classes</span><br></pre></td></tr></table></figure>
-<p>其实上述结果也是通过查找<strong>sun.boot.class.path</strong>这个系统属性所得知的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(System.getProperty(<span class="string">"sun.boot.class.path"</span>));</span><br></pre></td></tr></table></figure>
-<p>打印结果：<code>C:\Program Files\Java\jdk1.7.0_79\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_79\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_79\jre\classes</code></p>
-<ul>
-<li><p>Extension ClassLoader：称为扩展类加载器，负责加载Java的扩展类库，默认加载JAVA_HOME/jre/lib/ext目录下的所有jar。</p>
-</li>
-<li><p>App ClassLoader：称为系类加载器，负责加载应用程序classpath目录下的所有jar和class文件。</p>
-</li>
-</ul>
-<p><strong>注意</strong>除了Java默认提供的三个ClassLoader之外，用户还可以根据需要定义自已的ClassLoader，而这些自定义的ClassLoader都必须继承自java.lang.ClassLoader类，也包括Java提供的另外二个ClassLoader（Extension ClassLoader和App ClassLoader）在内，但是Bootstrap ClassLoader不继承自ClassLoader，因为它不是一个普通的Java类，底层由C++编写，已嵌入到了JVM内核当中，当JVM启动后，Bootstrap ClassLoader也随着启动，负责加载完核心类库后，并构造Extension ClassLoader和App ClassLoader类加载器。</p>
-        
-          <a class="article-more-a" href="/2016/03/15/Java-ClassLoader/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ClassLoader</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/03/15/Java-ClassLoader/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1188,14 +1188,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">targetSdkVersion</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
@@ -1204,15 +1196,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Android</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">targetSdkVersion</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Overloading</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Overriding</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1244,6 +1244,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">国际化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OpenVPN</a>
               </li>
              
@@ -1256,10 +1260,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">国际化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
@@ -1268,15 +1268,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JDK</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JDK</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1285,6 +1281,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Arithmetic</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1328,11 +1328,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Think in Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">events</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Think in Java</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1349,10 +1357,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Message</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">

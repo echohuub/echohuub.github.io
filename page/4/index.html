@@ -143,6 +143,199 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-ReadWriteLock" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/29/ReadWriteLock/">ReadWriteLock</a>
+    </h1>
+  
+
+        
+        <a href="/2016/02/29/ReadWriteLock/" class="archive-article-date">
+  	<time datetime="2016-02-29T05:03:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-02-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>java.util.concurrent.locks.ReadWriteLock 是一个高级的线程锁机制，它允许多个线程来读取一个特定的资源，但在同一时间，只有能一个线程执行写操作。<br>一个ReadWriteLock中保持一对相关的锁，一个用于只读操作，另一个用于写操作。在没有写操作的情况下，读锁(read lock)可以同时被多个线程执行。写锁(write lock)是排它性的。在成功获取读锁后所读到的数据都是最新的。</p>
+<ul>
+<li>读锁可以允许多个进行读操作的线程同时进入，但不允许写进程进入</li>
+<li>写锁只允许一个写进程进入，在这期间任何线程都不能再进入</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteLockTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Queue3 q3 = <span class="keyword">new</span> Queue3();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="string">"Read Thread-"</span> + i) &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                        q3.get();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;.start();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="string">"Write Thread-"</span> + i) &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                        q3.put(<span class="keyword">new</span> Random().nextInt(<span class="number">10000</span>));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Queue3</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> Object data = <span class="keyword">null</span>;</span><br><span class="line">        ReadWriteLock rwl = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            rwl.readLock().lock();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" is ready to read data"</span>);</span><br><span class="line">                Thread.sleep((<span class="keyword">long</span>) (Math.random() * <span class="number">1000</span>));</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" has been read data : "</span> + data);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                rwl.readLock().unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Object data)</span> </span>&#123;</span><br><span class="line">            rwl.writeLock().lock();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" is ready to write data"</span>);</span><br><span class="line">                Thread.sleep((<span class="keyword">long</span>) (Math.random() * <span class="number">1000</span>));</span><br><span class="line">                <span class="keyword">this</span>.data = data;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" has been write data : "</span> + data);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                rwl.writeLock().unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Read Thread-<span class="number">0</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">1</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">2</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">2</span> has been read data : <span class="keyword">null</span></span><br><span class="line">Read Thread-<span class="number">1</span> has been read data : <span class="keyword">null</span></span><br><span class="line">Read Thread-<span class="number">0</span> has been read data : <span class="keyword">null</span></span><br><span class="line">Write Thread-<span class="number">0</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">0</span> has been write data : <span class="number">577</span></span><br><span class="line">Write Thread-<span class="number">0</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">0</span> has been write data : <span class="number">8005</span></span><br><span class="line">Write Thread-<span class="number">2</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">2</span> has been write data : <span class="number">8935</span></span><br><span class="line">Write Thread-<span class="number">2</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">2</span> has been write data : <span class="number">0</span></span><br><span class="line">Write Thread-<span class="number">2</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">2</span> has been write data : <span class="number">5878</span></span><br><span class="line">Write Thread-<span class="number">1</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">1</span> has been write data : <span class="number">963</span></span><br><span class="line">Write Thread-<span class="number">1</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">1</span> has been write data : <span class="number">4703</span></span><br><span class="line">Write Thread-<span class="number">1</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">1</span> has been write data : <span class="number">7550</span></span><br><span class="line">Read Thread-<span class="number">2</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">1</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">0</span> is ready to read data</span><br><span class="line">Read Thread-<span class="number">1</span> has been read data : <span class="number">7550</span></span><br><span class="line">Read Thread-<span class="number">2</span> has been read data : <span class="number">7550</span></span><br><span class="line">Read Thread-<span class="number">0</span> has been read data : <span class="number">7550</span></span><br><span class="line">Write Thread-<span class="number">0</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">0</span> has been write data : <span class="number">1733</span></span><br><span class="line">Write Thread-<span class="number">0</span> is ready to write data</span><br><span class="line">Write Thread-<span class="number">0</span> has been write data : <span class="number">6151</span></span><br></pre></td></tr></table></figure></p>
+        
+          <a class="article-more-a" href="/2016/02/29/ReadWriteLock/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Thread</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/02/29/ReadWriteLock/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Traditional-Thread" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/29/Traditional-Thread/">传统线程机制的回顾</a>
+    </h1>
+  
+
+        
+        <a href="/2016/02/29/Traditional-Thread/" class="archive-article-date">
+  	<time datetime="2016-02-28T16:02:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-02-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="传统线程机制的回顾"><a href="#传统线程机制的回顾" class="headerlink" title="传统线程机制的回顾"></a>传统线程机制的回顾</h2><h3 id="创建线程的两种传统方式"><a href="#创建线程的两种传统方式" class="headerlink" title="创建线程的两种传统方式"></a>创建线程的两种传统方式</h3><ul>
+<li>在Thread子类覆盖的run方法中编写运行代码</li>
+<li>在传递给Thread对象的Runnable对象的run方法中编写代码</li>
+</ul>
+<p>总结：查看Thread类的run方法的源代码可以看到，其实这两种方式都是在调用Thread对象的run方法，如果Thread类的run方法没有被覆盖，并且为该Thread对象设置了Runnable对象，该run方法会调用Runnable的run方法。</p>
+<p>问题：如果在Thread子类覆盖的run方法中编写了运行代码，也为Thread子类对象传递了一个Runnable对象，那么，线程运行时的执行代码是子类的run方法还是Runnable的run方法？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">	<span class="comment">/* What will be run. */</span></span><br><span class="line">    <span class="keyword">private</span> Runnable target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Thread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        init(<span class="keyword">null</span>, <span class="keyword">null</span>, <span class="string">"Thread-"</span> + nextThreadNum(), <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Thread</span><span class="params">(Runnable target)</span> </span>&#123;</span><br><span class="line">        init(<span class="keyword">null</span>, target, <span class="string">"Thread-"</span> + nextThreadNum(), <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ThreadGroup g, Runnable target, String name,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">long</span> stackSize)</span> </span>&#123;</span><br><span class="line">        init(g, target, name, stackSize, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ThreadGroup g, Runnable target, String name,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">long</span> stackSize, AccessControlContext acc)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (target != <span class="keyword">null</span>) &#123;</span><br><span class="line">            target.run();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="定时器的应用"><a href="#定时器的应用" class="headerlink" title="定时器的应用"></a>定时器的应用</h3><ul>
+<li>Time类</li>
+<li>TimeTask类</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for execution after the specified delay.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task, <span class="keyword">long</span> delay)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for execution at the specified time.  If</span></span><br><span class="line"><span class="comment"> * the time is in the past, the task is scheduled for immediate execution.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task, Date time)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for repeated &lt;i&gt;fixed-delay execution&lt;/i&gt;,</span></span><br><span class="line"><span class="comment"> * beginning after the specified delay.  Subsequent executions take place</span></span><br><span class="line"><span class="comment"> * at approximately regular intervals separated by the specified period.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task, <span class="keyword">long</span> delay, <span class="keyword">long</span> period)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for repeated &lt;i&gt;fixed-delay execution&lt;/i&gt;,</span></span><br><span class="line"><span class="comment"> * beginning at the specified time. Subsequent executions take place at</span></span><br><span class="line"><span class="comment"> * approximately regular intervals, separated by the specified period.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task, Date firstTime, <span class="keyword">long</span> period)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for repeated &lt;i&gt;fixed-rate execution&lt;/i&gt;,</span></span><br><span class="line"><span class="comment"> * beginning after the specified delay.  Subsequent executions take place</span></span><br><span class="line"><span class="comment"> * at approximately regular intervals, separated by the specified period.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduleAtFixedRate</span><span class="params">(TimerTask task, <span class="keyword">long</span> delay, <span class="keyword">long</span> period)</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules the specified task for repeated &lt;i&gt;fixed-rate execution&lt;/i&gt;,</span></span><br><span class="line"><span class="comment"> * beginning at the specified time. Subsequent executions take place at</span></span><br><span class="line"><span class="comment"> * approximately regular intervals, separated by the specified period.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduleAtFixedRate</span><span class="params">(TimerTask task, Date firstTime, <span class="keyword">long</span> period)</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="线程的互斥与同步"><a href="#线程的互斥与同步" class="headerlink" title="线程的互斥与同步"></a>线程的互斥与同步</h2><ul>
+<li>使用synchronized代码块及其原理</li>
+<li>使用synchronized方法(this)</li>
+<li>分析静态方法所使用的同步监视器是什么(class)<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraditionalThreadSynchronized</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">new</span> TraditionalThreadSynchronized().init();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> Outputer outputer = <span class="keyword">new</span> Outputer();</span><br><span class="line">		<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">					<span class="keyword">try</span> &#123;</span><br><span class="line">						Thread.sleep(<span class="number">10</span>);</span><br><span class="line">					&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">						<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">						e.printStackTrace();</span><br><span class="line">					&#125;</span><br><span class="line">					outputer.output(<span class="string">"hello"</span>);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;).start();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">					<span class="keyword">try</span> &#123;</span><br><span class="line">						Thread.sleep(<span class="number">10</span>);</span><br><span class="line">					&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">						<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">						e.printStackTrace();</span><br><span class="line">					&#125;</span><br><span class="line">					outputer.output3(<span class="string">"world"</span>);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;).start();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Outputer</span> </span>&#123;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">output</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">int</span> len = name.length();</span><br><span class="line">			<span class="keyword">synchronized</span> (Outputer.class) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">					System.out.print(name.charAt(i));</span><br><span class="line">				&#125;</span><br><span class="line">				System.out.println();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">output2</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">int</span> len = name.length();</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">				System.out.print(name.charAt(i));</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">output3</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">int</span> len = name.length();</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">				System.out.print(name.charAt(i));</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="wait与notify实现线程间的通信"><a href="#wait与notify实现线程间的通信" class="headerlink" title="wait与notify实现线程间的通信"></a>wait与notify实现线程间的通信</h3><p>子线程循环10次，接着主线程循环100次，接着又回到子线程循环10次，接着再回到主线程循环100次，如此循环50次。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraditionalThreadCommunication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">final</span> Business business = <span class="keyword">new</span> Business();</span><br><span class="line">		<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line"></span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">50</span>; i++) &#123;</span><br><span class="line">					business.sub(i);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;).start();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">50</span>; i++) &#123;</span><br><span class="line">			business.main(i);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Business</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> bShouldSub = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">while</span> (!bShouldSub) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">this</span>.wait();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">10</span>; j++) &#123;</span><br><span class="line">			System.out.println(<span class="string">"sub thread sequence of "</span> + j + <span class="string">",loop of "</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">		bShouldSub = <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">this</span>.notify();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">while</span> (bShouldSub) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">this</span>.wait();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">100</span>; j++) &#123;</span><br><span class="line">			System.out.println(<span class="string">"main thread sequence of "</span> + j + <span class="string">",loop of "</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">		bShouldSub = <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">this</span>.notify();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Thead</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/02/29/Traditional-Thread/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Dealing-with-InterruptedException" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -943,263 +1136,6 @@
 
 
   
-    <article id="post-Ubuntu-PPTP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/01/Ubuntu-PPTP/">Ubuntu 14.04使用PPTP配置VPN</a>
-    </h1>
-  
-
-        
-        <a href="/2015/03/01/Ubuntu-PPTP/" class="archive-article-date">
-  	<time datetime="2015-03-01T10:21:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="第一步-安装PPTP"><a href="#第一步-安装PPTP" class="headerlink" title="第一步 安装PPTP"></a>第一步 安装PPTP</h3><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-<span class="built_in">get</span> <span class="keyword">update</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-<span class="builtin-name">get</span> install pptpd</span><br></pre></td></tr></table></figure>
-<p>修改pptpd的配置文件<code>/etc/pptpd.conf</code>，将以下两行的注释符<code>#</code>去掉：</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">localip <span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">remoteip <span class="number">192.168</span><span class="number">.0</span><span class="number">.234</span><span class="number">-238</span>,<span class="number">192.168</span><span class="number">.0</span><span class="number">.245</span></span><br></pre></td></tr></table></figure>
-<p>修改<code>/etc/ppp/chap-secrets</code>文件，添加认证用户：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Secrets <span class="keyword">for</span> authentication using CHAP</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> client    server  secret          IP address</span></span><br><span class="line">test1       pptpd   123456          *</span><br><span class="line">test2       *       123456          *</span><br></pre></td></tr></table></figure>
-<h3 id="第二步-添加DNS服务器"><a href="#第二步-添加DNS服务器" class="headerlink" title="第二步 添加DNS服务器"></a>第二步 添加DNS服务器</h3><p>修改<code>/etc/ppp/pptpd-options</code>文件，添加两行：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">ms-dns</span> 8<span class="selector-class">.8</span><span class="selector-class">.8</span><span class="selector-class">.8</span></span><br><span class="line"><span class="selector-tag">ms-dns</span> 8<span class="selector-class">.8</span><span class="selector-class">.4</span><span class="selector-class">.4</span></span><br></pre></td></tr></table></figure>
-<p>现在可以开启PPTP守护进程了：</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">service pptpd restart</span></span><br></pre></td></tr></table></figure>
-<p>可以使用<code>netstat -alpn | grep :1723</code>验证运行状态。</p>
-<h3 id="第三步-设置IP转发"><a href="#第三步-设置IP转发" class="headerlink" title="第三步 设置IP转发"></a>第三步 设置IP转发</h3><p>简单地编辑<code>/etc/sysctl.conf</code>文件，添加下面这一行（如果不存在的话）：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net<span class="selector-class">.ipv4</span><span class="selector-class">.ip_forward</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>执行<code>sysctl -p</code>使之立即生效。</p>
-<h3 id="第四步-为iptables创建NAT规则"><a href="#第四步-为iptables创建NAT规则" class="headerlink" title="第四步 为iptables创建NAT规则"></a>第四步 为iptables创建NAT规则</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t<span class="built_in"> nat </span>-A POSTROUTING -o eth0 -j MASQUERADE &amp;&amp; iptables-save</span><br></pre></td></tr></table></figure>
-<p>然后重启pptpd服务：</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">service pptpd restart</span></span><br></pre></td></tr></table></figure>
-<hr>
-<p>然后应该可以妥妥地翻墙了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">VPN</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">PPTP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2015/03/01/Ubuntu-PPTP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Ubuntu-OpenVPN" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/01/Ubuntu-OpenVPN/">Ubuntu 14.04配置OpenVPN</a>
-    </h1>
-  
-
-        
-        <a href="/2015/03/01/Ubuntu-OpenVPN/" class="archive-article-date">
-  	<time datetime="2015-03-01T09:51:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-03-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="第一步-安装和配置OpenVPN环境"><a href="#第一步-安装和配置OpenVPN环境" class="headerlink" title="第一步 安装和配置OpenVPN环境"></a>第一步 安装和配置OpenVPN环境</h3><h4 id="OpenVPN配置"><a href="#OpenVPN配置" class="headerlink" title="OpenVPN配置"></a>OpenVPN配置</h4><p>在安装任何包之前，首先我们将更新Ubuntu的库列表。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install openvpn easy-rsa</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz &gt; /etc/openvpn/server.conf</span><br></pre></td></tr></table></figure>
-<p>在<code>server.conf</code>文件中，我们将做一些修改。</p>
-<p>首先找到类似如下的块：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Diffie hellman parameters.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Generate your own with:</span></span><br><span class="line"><span class="meta">#</span><span class="bash">   openssl dhparam -out dh1024.pem 1024</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Substitute 2048 <span class="keyword">for</span> 1024 <span class="keyword">if</span> you are using</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2048 bit keys.</span></span><br><span class="line">dh dh1024.pem</span><br></pre></td></tr></table></figure>
-<p>把<code>dh1024.pem</code>改成<code>dh2048.pem</code>，这样当生成server和client key的时候，这将使用两倍的RSA key长度。</p>
-<p>然后找到这一段：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> If enabled, this directive will configure</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> all clients to redirect their default</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> network gateway through the VPN, causing</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> all IP traffic such as web browsing and</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> and DNS lookups to go through the VPN</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> (The OpenVPN server machine may need to NAT</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> or bridge the TUN/TAP interface to the internet</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">in</span> order <span class="keyword">for</span> this to work properly).</span></span><br><span class="line">;push "redirect-gateway def1 bypass-dhcp"</span><br></pre></td></tr></table></figure>
-<p>取消最后一行的注释<code>push &quot;redirect-gateway def1 bypass-dhcp&quot;</code>。</p>
-<p>再找到这个区域：</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># Certain Windows-specific network settings</span></span><br><span class="line"><span class="meta"># can be pushed to clients, such as DNS</span></span><br><span class="line"><span class="meta"># or WINS server addresses.  CAVEAT:</span></span><br><span class="line"><span class="meta"># http://openvpn.net/faq.html#dhcpcaveats</span></span><br><span class="line"><span class="meta"># The addresses below refer to the public</span></span><br><span class="line"><span class="meta"># DNS servers provided by opendns.com.</span></span><br><span class="line">;push <span class="string">"dhcp-option DNS 208.67.222.222"</span></span><br><span class="line">;push <span class="string">"dhcp-option DNS 208.67.220.220"</span></span><br></pre></td></tr></table></figure>
-<p>取消最后两行的注释，并改成：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">push</span> "<span class="selector-tag">dhcp-option</span> <span class="selector-tag">DNS</span> 8<span class="selector-class">.8</span><span class="selector-class">.8</span><span class="selector-class">.8</span>"</span><br><span class="line"><span class="selector-tag">push</span> "<span class="selector-tag">dhcp-option</span> <span class="selector-tag">DNS</span> 8<span class="selector-class">.8</span><span class="selector-class">.4</span><span class="selector-class">.4</span>"</span><br></pre></td></tr></table></figure>
-<p>最后找到这个区域：</p>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># You can uncomment this out on</span></span><br><span class="line"><span class="comment"># non-Windows systems.</span></span><br><span class="line">;<span class="keyword">user</span> <span class="title">nobody</span></span><br><span class="line">;<span class="keyword">group</span> <span class="title">nogroup</span></span><br></pre></td></tr></table></figure>
-<p>取消最后两行的注释，改完后看起来长这样：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user nobody</span><br><span class="line">group nogroup</span><br></pre></td></tr></table></figure>
-<h4 id="配置包转发"><a href="#配置包转发" class="headerlink" title="配置包转发"></a>配置包转发</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
-<p>在这个文件顶部附近，我将看到：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Uncomment the next line to <span class="built_in">enable</span> packet forwarding <span class="keyword">for</span> IPv4</span></span><br><span class="line"><span class="meta">#</span><span class="bash">net.ipv4.ip_forward=1</span></span><br></pre></td></tr></table></figure>
-<p>取消注释<code>net.ipv4.ip_forward</code></p>
-<h4 id="简单的防火墙ufw"><a href="#简单的防火墙ufw" class="headerlink" title="简单的防火墙ufw"></a>简单的防火墙ufw</h4><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ufw allow ssh</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw allow <span class="number">1194</span>/udp</span><br></pre></td></tr></table></figure>
-<p>打开<code>/etc/default/ufw</code>，找到<code>DEFAULT_FORWARD_POLICY=&quot;DROP&quot;</code>，把<strong>DROP</strong>改成<strong>ACCEPT</strong>。</p>
-<p>接下来需要配置网络地址转换和IP伪装，打开<code>/etc/ufw/before.rules</code>，添加<code># START OPENVPN RULES</code>到<code># END OPENVPN RULES</code>之间的内容：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rules.before</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Rules that should be run before the ufw <span class="built_in">command</span> line added rules. Custom</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rules should be added to one of these chains:</span></span><br><span class="line"><span class="meta">#</span><span class="bash">   ufw-before-input</span></span><br><span class="line"><span class="meta">#</span><span class="bash">   ufw-before-output</span></span><br><span class="line"><span class="meta">#</span><span class="bash">   ufw-before-forward</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> START OPENVPN RULES</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> NAT table rules</span></span><br><span class="line">*nat</span><br><span class="line">:POSTROUTING ACCEPT [0:0] </span><br><span class="line"><span class="meta">#</span><span class="bash"> Allow traffic from OpenVPN client to eth0</span></span><br><span class="line">-A POSTROUTING -s 192.168.1.0/24 -o eth0 -j MASQUERADE</span><br><span class="line">COMMIT</span><br><span class="line"><span class="meta">#</span><span class="bash"> END OPENVPN RULES</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Don<span class="string">'t delete these required lines, otherwise there will be errors</span></span></span><br><span class="line">*filter</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw <span class="built_in">enable</span></span><br></pre></td></tr></table></figure>
-<p>检查ufw的主要防火墙规则</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ufw status</span></span><br></pre></td></tr></table></figure>
-<p>会看到类似的输出：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Status</span>: active</span><br><span class="line"></span><br><span class="line">To                         Action      From</span><br><span class="line">--                         ------      ----</span><br><span class="line">22                         ALLOW       Anywhere</span><br><span class="line">1194/udp                   ALLOW       Anywhere</span><br><span class="line">22 (v6)                    ALLOW       Anywhere (v6)</span><br><span class="line">1194/udp (v6)              ALLOW       Anywhere (v6)</span><br></pre></td></tr></table></figure>
-<h3 id="第二步-创建一个证书频发机构和服务端证书-Key"><a href="#第二步-创建一个证书频发机构和服务端证书-Key" class="headerlink" title="第二步 创建一个证书频发机构和服务端证书/Key"></a>第二步 创建一个证书频发机构和服务端证书/Key</h3><h4 id="配置和编译证书频发机构"><a href="#配置和编译证书频发机构" class="headerlink" title="配置和编译证书频发机构"></a>配置和编译证书频发机构</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r /usr/share/easy-rsa/ /etc/openvpn</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /etc/openvpn/easy-rsa/keys</span><br></pre></td></tr></table></figure>
-<p>编辑<code>/etc/openvpn/easy-rsa/vars</code>，然后改变相应的内容：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">KEY_COUNTRY</span>=<span class="string">"US"</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">KEY_PROVINCE</span>=<span class="string">"TX"</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">KEY_CITY</span>=<span class="string">"Dallas"</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">KEY_ORG</span>=<span class="string">"My Company Name"</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">KEY_EMAIL</span>=<span class="string">"sammy@example.com"</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">KEY_OU</span>=<span class="string">"MYOrganizationalUnit"</span></span><br></pre></td></tr></table></figure>
-<p>为了方便，我们将使用<code>server</code>作为key的名字，紧临着上面这一段修改：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">KEY_NAME</span>=<span class="string">"server"</span></span><br></pre></td></tr></table></figure>
-<p>我们需要生成<code>Diffie-Hellman</code>参数，这可能会花几分钟时间：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl dhparam -out /etc/openvpn/dh2048<span class="selector-class">.pem</span> <span class="number">2048</span></span><br></pre></td></tr></table></figure></p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> <span class="string">/etc/openvpn/easy-rsa</span></span><br></pre></td></tr></table></figure>
-<p>初始化PKI(Public key Infrastructure)。(注意点和空格)</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">. </span>./vars</span><br></pre></td></tr></table></figure>
-<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./clean-<span class="keyword">all</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./build-ca</span></span><br></pre></td></tr></table></figure>
-<p>如果不需要改变，直接回车即可。</p>
-<h4 id="生成服务端证书和key"><a href="#生成服务端证书和key" class="headerlink" title="生成服务端证书和key"></a>生成服务端证书和key</h4><p>仍然在<code>/etc/openvpn/easy-rsa</code>目录：<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build-key-<span class="keyword">server</span> <span class="keyword">server</span></span><br></pre></td></tr></table></figure></p>
-<p>跟<code>./build-ca</code>有相似的输出，如果不需要修改，直接回车即可。但最后两步需要回复<code>y</code>确认。</p>
-<h4 id="移动服务端证书和key"><a href="#移动服务端证书和key" class="headerlink" title="移动服务端证书和key"></a>移动服务端证书和key</h4><p>OpenVPN期望在<code>/etc/openvpn</code>目录里看到服务端的CA。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/openvpn/easy-rsa/keys/&#123;server<span class="selector-class">.crt</span>,server<span class="selector-class">.key</span>,ca.crt&#125; /etc/openvpn</span><br></pre></td></tr></table></figure></p>
-<p>到此，OpenVPN服务端做好了，可以开始了：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service openvpn start</span><br><span class="line">service openvpn status</span><br></pre></td></tr></table></figure>
-<h3 id="第三步-为客户端生成证书和key"><a href="#第三步-为客户端生成证书和key" class="headerlink" title="第三步 为客户端生成证书和key"></a>第三步 为客户端生成证书和key</h3><h4 id="Key和证书绑定"><a href="#Key和证书绑定" class="headerlink" title="Key和证书绑定"></a>Key和证书绑定</h4><p>仍然在<code>/etc/openvpn/easy-rsa</code>目录。</p>
-<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./<span class="keyword">build</span>-<span class="keyword">key</span> client1</span><br></pre></td></tr></table></figure>
-<p>如果不需要修改直接回车，最后两项需要明确的<code>y</code>回应。</p>
-<p>复制例子配置到我们的目录，再修改。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp <span class="regexp">/usr/</span>share<span class="regexp">/doc/</span>openvpn<span class="regexp">/examples/</span>sample-config-files<span class="regexp">/client.conf /</span>etc<span class="regexp">/openvpn/</span>easy-rsa<span class="regexp">/keys/</span>client.ovpn</span><br></pre></td></tr></table></figure>
-<h4 id="将证书和密钥转移到客户端设备"><a href="#将证书和密钥转移到客户端设备" class="headerlink" title="将证书和密钥转移到客户端设备"></a>将证书和密钥转移到客户端设备</h4><p>需要将以下这些文件转移到客户端设备：</p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta-keyword">/etc/</span>openvpn<span class="meta-keyword">/easy-rsa/</span>keys/client.ovpn</span><br><span class="line"><span class="meta-keyword">/etc/</span>openvpn<span class="meta-keyword">/easy-rsa/</span>keys/client1.crt</span><br><span class="line"><span class="meta-keyword">/etc/</span>openvpn<span class="meta-keyword">/easy-rsa/</span>keys/client1.key</span><br><span class="line"><span class="meta-keyword">/etc/</span>openvpn/ca.crt</span><br></pre></td></tr></table></figure>
-<p>可以使用<code>scp</code>或者<code>pscp</code>拷贝：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp root<span class="meta">@your</span>-server-<span class="string">ip:</span><span class="regexp">/etc/</span>openvpn<span class="regexp">/easy-rsa/</span>keys/client1.key .</span><br></pre></td></tr></table></figure>
-<p>拷贝完成后，最终客户端将得到这四个文件：</p>
-<ul>
-<li>client1.crt</li>
-<li>client1.key</li>
-<li>client.ovpn</li>
-<li>ca.crt</li>
-</ul>
-<h3 id="第四步-为客户端创建一个统一的OpenVPN属性文件"><a href="#第四步-为客户端创建一个统一的OpenVPN属性文件" class="headerlink" title="第四步 为客户端创建一个统一的OpenVPN属性文件"></a>第四步 为客户端创建一个统一的OpenVPN属性文件</h3><p>打开<code>client.ovpn</code>文件，找到<code>;remote my-server-2 1194</code>这行，取消注释，并且使用你自己的VPN IP。</p>
-<p>对<code>user nobody</code>和<code>group nogroup</code>取消注释：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Downgrade privileges after initialization (non-Windows only)</span></span><br><span class="line">user nobody</span><br><span class="line">group nogroup</span><br></pre></td></tr></table></figure>
-<p>然后需要把ca.crt,client1.crt和client1.key的内容粘贴到这个.ovpn的文件的末尾，使用基本的xml格式语法，类似这种：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">&lt;ca&gt;</span></span><br><span class="line">(<span class="keyword">insert</span> <span class="keyword">ca</span>.crt here)</span><br><span class="line">&lt;/<span class="keyword">ca</span>&gt;</span><br><span class="line"><span class="symbol">&lt;cert&gt;</span></span><br><span class="line">(<span class="keyword">insert</span> client1.crt here)</span><br><span class="line">&lt;/cert&gt;</span><br><span class="line"><span class="symbol">&lt;key&gt;</span></span><br><span class="line">(<span class="keyword">insert</span> client1.key here)</span><br><span class="line">&lt;/key&gt;</span><br></pre></td></tr></table></figure>
-<p>当粘贴完成，这个文件的末尾应该类似这样的：</p>
-<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;ca&gt;</span><br><span class="line">-<span class="ruby">----<span class="keyword">BEGIN</span> CERTIFICATE-----</span></span><br><span class="line"><span class="ruby">. . .</span></span><br><span class="line"><span class="ruby">-----<span class="keyword">END</span> CERTIFICATE-----</span></span><br><span class="line"><span class="ruby">&lt;<span class="regexp">/ca&gt;</span></span></span><br><span class="line"><span class="ruby"></span></span><br><span class="line"><span class="ruby">&lt;cert&gt;</span></span><br><span class="line"><span class="ruby"><span class="symbol">Certificate:</span></span></span><br><span class="line"><span class="ruby">. . .</span></span><br><span class="line"><span class="ruby">-----<span class="keyword">END</span> CERTIFICATE-----</span></span><br><span class="line"><span class="ruby">. . .</span></span><br><span class="line"><span class="ruby">-----<span class="keyword">END</span> CERTIFICATE-----</span></span><br><span class="line"><span class="ruby">&lt;<span class="regexp">/cert&gt;</span></span></span><br><span class="line"><span class="ruby"></span></span><br><span class="line"><span class="ruby">&lt;key&gt;</span></span><br><span class="line"><span class="ruby">-----<span class="keyword">BEGIN</span> PRIVATE KEY-----</span></span><br><span class="line"><span class="ruby">. . .</span></span><br><span class="line"><span class="ruby">-----<span class="keyword">END</span> PRIVATE KEY-----</span></span><br><span class="line"><span class="ruby">&lt;<span class="regexp">/key&gt;</span></span></span><br></pre></td></tr></table></figure>
-<p>保存并退出，现在我们已经有一个为client1生成的统一的OpenVPN客户端配置文件。</p>
-<h3 id="第五步-安装客户端配置文件"><a href="#第五步-安装客户端配置文件" class="headerlink" title="第五步 安装客户端配置文件"></a>第五步 安装客户端配置文件</h3><h4 id="Window"><a href="#Window" class="headerlink" title="Window"></a>Window</h4><p>Windows可以直接安装<a href="https://openvpn.net/index.php/open-source/downloads.html" target="_blank" rel="noopener">OpenVPN</a>。</p>
-<p>安装完成后，把前面生成的client.ovpn拷贝到安装目录下的<code>config</code>文件夹下。</p>
-<p>然后当你启动OpenVPN，它将自动识别这个配置文件。之后可以使用图形化的界面连接和断开等操作。</p>
-<h4 id="OS-X"><a href="#OS-X" class="headerlink" title="OS X"></a>OS X</h4><p>OS X可以使用免费的<a href="https://code.google.com/p/tunnelblick/" target="_blank" rel="noopener">Tunnelblick</a>，安装完成后，双击client.ovpn文件，Tunnelblick将自动安装这个客户端配置。</p>
-<h4 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h4><p>Android端可以使用<a href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn" target="_blank" rel="noopener">Android OpenVPN Connect</a></p>
-<h4 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h4><p>iOS设备可以使用<a href="https://itunes.apple.com/us/app/id590379981" target="_blank" rel="noopener">OpenVPN Connect</a>，不过可能需要进入美区AppStore才可以搜索得到，或者使用一些助手类工具安装。然后可以使用QQ简单地把client.opvpn发送到手机端，再选择使用OpenVPN打开即可。</p>
-<hr>
-<p>然后就可以妥妥地翻墙了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OpenVPN</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">VPN</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2015/03/01/Ubuntu-OpenVPN/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
@@ -1293,14 +1229,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">targetSdkVersion</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
@@ -1309,15 +1237,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Android</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">targetSdkVersion</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Overloading</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Overriding</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1349,6 +1285,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">国际化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OpenVPN</a>
               </li>
              
@@ -1361,10 +1301,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">国际化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
@@ -1373,15 +1309,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JDK</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JDK</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1390,6 +1322,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Arithmetic</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1433,11 +1369,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Think in Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">events</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Think in Java</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1454,10 +1398,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Message</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
