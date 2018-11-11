@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="HeQingbao&#39;s Notes">
 <meta property="og:description" content="介绍Docker三剑客：  docker-machine # 提供容器服务 docker-compose # 提供脚本执行服务 docker-swarm # 提供容器的集群技术  docker-swarm集群节点分为manager和worker节点，manager节点是管理swarm集群的，worker是工作节点，是用来运行容器部署项目的。manager节点除了管理集群之外，其自身也会承担work">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-11T14:46:35.305Z">
+<meta property="og:updated_time" content="2018-11-11T14:47:12.520Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker集群之Swarm">
 <meta name="twitter:description" content="介绍Docker三剑客：  docker-machine # 提供容器服务 docker-compose # 提供脚本执行服务 docker-swarm # 提供容器的集群技术  docker-swarm集群节点分为manager和worker节点，manager节点是管理swarm集群的，worker是工作节点，是用来运行容器部署项目的。manager节点除了管理集群之外，其自身也会承担work">
@@ -171,6 +171,7 @@
 </ul>
 <p>docker-swarm集群节点分为manager和worker节点，manager节点是管理swarm集群的，worker是工作节点，是用来运行容器部署项目的。manager节点除了管理集群之外，其自身也会承担work节点的工作。</p>
 <p>无论是manager还是work节点，都可以配置多节点。如果一个manger节点挂掉，其它的manager节点就会选举一个新的manager节点来管理swarm集群。worker节点也是一样。</p>
+<a id="more"></a>
 <h3 id="创建swarm集群"><a href="#创建swarm集群" class="headerlink" title="创建swarm集群"></a>创建swarm集群</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init</span><br></pre></td></tr></table></figure>
 <p>可加参数：</p>
 <ul>
@@ -443,14 +444,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">transient</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Android</a>
               </li>
              
@@ -459,7 +452,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">transient</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -468,6 +465,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Overriding</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -499,10 +500,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">国际化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OpenVPN</a>
               </li>
              
@@ -515,6 +512,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">国际化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
@@ -523,11 +524,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color4">JDK</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JDK</a>
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Tomcat</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -535,11 +540,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Arithmetic</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
+                <a href="javascript:void(0)" class="js-tag color1">Arithmetic</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -588,10 +593,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">events</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
