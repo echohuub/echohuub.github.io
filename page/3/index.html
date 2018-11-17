@@ -143,6 +143,104 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Effective-Java-Notes" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/13/Effective-Java-Notes/">Effective Java笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2016/04/13/Effective-Java-Notes/" class="archive-article-date">
+  	<time datetime="2016-04-13T13:05:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="第二章-创建和销毁对象"><a href="#第二章-创建和销毁对象" class="headerlink" title="第二章 创建和销毁对象"></a>第二章 创建和销毁对象</h2><p>第1条：考虑用静态工厂方法代替构造器</p>
+<p>第2条：遇到多个构造器参数时要考虑用构建器</p>
+<p>第3条：用私有构造器或枚举类型强化Singleton属性</p>
+<p>第4条：通过私有构造器强化不可实例化的能力</p>
+<p>第5条：避免创建不必要的对象</p>
+<p>第6条：消除过期的对象引用</p>
+<p>第7条：避免使用终结方法</p>
+<h2 id="第三章-对于所有对象都通用的方法"><a href="#第三章-对于所有对象都通用的方法" class="headerlink" title="第三章 对于所有对象都通用的方法"></a>第三章 对于所有对象都通用的方法</h2><p>第8条：覆盖equals时请遵守通用约定</p>
+<p>第9条：覆盖equals时总要覆盖hashCode</p>
+<p>第10条：始终要覆盖toString</p>
+<p>第11条：谨慎地覆盖clone</p>
+<p>第12条：考虑实现Comparable接口</p>
+        
+          <a class="article-more-a" href="/2016/04/13/Effective-Java-Notes/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/04/13/Effective-Java-Notes/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Android-targetSdkVersion" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1045,115 +1143,6 @@
 
 
   
-    <article id="post-Be-Careful-With-Transient-Data" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/29/Be-Careful-With-Transient-Data/">Be Careful With Transient Data</a>
-    </h1>
-  
-
-        
-        <a href="/2016/02/29/Be-Careful-With-Transient-Data/" class="archive-article-date">
-  	<time datetime="2016-02-29T09:06:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-02-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>原文：<a href="http://www.devx.com/tips/Tip/13726" target="_blank" rel="noopener">http://www.devx.com/tips/Tip/13726</a><br>作者：Behrouz Fallahi</p>
-</blockquote>
-<p>Java序列化提供一种优雅的和易于使用的持久化对象实例的机制。当持久化对象时，可能有一个特殊的对象数据成员，我们不想用serialization机制来保存它。为了在一个特定对象的一个域上关闭serialization，可以在这个域前加上关键字transient。</p>
-<p>transient是Java语言的关键字，用来表示一个域不是该对象串行化的一部分。当一个对象被串行化的时候，transient型变量的值不包括在串行化的表示中，然而非transient型的变量是被包括进去的。</p>
-<p>看一下例子，假设我们定义一个类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoggingInfo</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">7702603582718186313L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Date loggingDate = <span class="keyword">new</span> Date();</span><br><span class="line">    <span class="keyword">private</span> String uid;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> String pwd;</span><br><span class="line"></span><br><span class="line">    LoggingInfo(String user, String password) &#123;</span><br><span class="line">        uid = user;</span><br><span class="line">        pwd = password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String password = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (pwd == <span class="keyword">null</span>) &#123;</span><br><span class="line">            password = <span class="string">"NOT SET"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            password = pwd;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"logon info: \n   "</span> + <span class="string">"user: "</span> + uid + </span><br><span class="line">        	<span class="string">"\n   logging date : "</span> + loggingDate.toString() + </span><br><span class="line">        	<span class="string">"\n   password: "</span> + password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>现在我们可以创建这个类的实例，并且序列化它，最后把序列化的对象写入到磁盘：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">LoggingInfo logInfo = <span class="keyword">new</span> LoggingInfo(<span class="string">"MIKE"</span>, <span class="string">"MECHANICS"</span>); </span><br><span class="line">System.out.println(logInfo.toString()); </span><br><span class="line"><span class="keyword">try</span> </span><br><span class="line">&#123; </span><br><span class="line">   ObjectOutputStream o = <span class="keyword">new</span> ObjectOutputStream( </span><br><span class="line">                <span class="keyword">new</span> FileOutputStream(<span class="string">"logInfo.out"</span>)); </span><br><span class="line">   o.writeObject(logInfo); </span><br><span class="line">   o.close(); </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">catch</span>(Exception e) &#123;<span class="comment">//deal with exception&#125;</span></span><br></pre></td></tr></table></figure>
-<p>然后读取这个对象：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> </span><br><span class="line">&#123; </span><br><span class="line">   ObjectInputStream in =<span class="keyword">new</span> ObjectInputStream( </span><br><span class="line">                <span class="keyword">new</span> FileInputStream(<span class="string">"logInfo.out"</span>)); </span><br><span class="line">   LoggingInfo logInfo = (LoggingInfo)in.readObject(); </span><br><span class="line">   System.out.println(logInfo.toString()); </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">catch</span>(Exception e) &#123;<span class="comment">//deal with exception&#125;</span></span><br></pre></td></tr></table></figure>
-<p>完整的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LoggingInfo logInfo = <span class="keyword">new</span> LoggingInfo(<span class="string">"MIKE"</span>, <span class="string">"MECHANICS"</span>);</span><br><span class="line">        System.out.println(logInfo.toString());</span><br><span class="line"></span><br><span class="line">        ObjectOutputStream out = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            out = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">"logInfo.out"</span>));</span><br><span class="line">            out.writeObject(logInfo);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (out != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    out.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException ignore) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ObjectInputStream in = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            in = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">"logInfo.out"</span>));</span><br><span class="line">            LoggingInfo info = (LoggingInfo) in.readObject();</span><br><span class="line">            System.out.println(info);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">logon info: </span><br><span class="line">   user: MIKE</span><br><span class="line">   logging date : Mon Feb <span class="number">29</span> <span class="number">17</span>:<span class="number">14</span>:<span class="number">34</span> CST <span class="number">2016</span></span><br><span class="line">   password: MECHANICS</span><br><span class="line">logon info: </span><br><span class="line">   user: MIKE</span><br><span class="line">   logging date : Mon Feb <span class="number">29</span> <span class="number">17</span>:<span class="number">14</span>:<span class="number">34</span> CST <span class="number">2016</span></span><br><span class="line">   password: NOT SET</span><br></pre></td></tr></table></figure>
-<p>我们会注意到从磁盘中读回(read–back(de-serializing))的对象打印password为<code>NOT SET</code>。这是当我们定义pwd域为transient时，所期望的正确结果。</p>
-<p>现在，让我们来看一下粗心对待transient域可能引起的潜在问题。假设我们修改了类定义，提供给transient域一个默认值：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GuestLoggingInfo</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">7702603582718186313L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Date loggingDate = <span class="keyword">new</span> Date();</span><br><span class="line">    <span class="keyword">private</span> String uid;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> String pwd;</span><br><span class="line"></span><br><span class="line">    GuestLoggingInfo() &#123;</span><br><span class="line">        uid = <span class="string">"guest"</span>;</span><br><span class="line">        pwd = <span class="string">"guest"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 跟上面一样</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>现在如果我们串行化GuestLoggingInfo的一个实例，将它写入磁盘，并且再将它从磁盘中读出，我们仍然看到读回的对象打印password为<code>NOT SET</code>。当从磁盘中读出某个类的实例时，实际上并不会执行这个类的构造函数，而是载入了一个该类对象的持久化状态，并将这个状态赋值给该类的另一个对象。</p>
-        
-          <a class="article-more-a" href="/2016/02/29/Be-Careful-With-Transient-Data/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">transient</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/02/29/Be-Careful-With-Transient-Data/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -1247,19 +1236,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">targetSdkVersion</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">transient</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Android</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">targetSdkVersion</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1275,14 +1264,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HashMap</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HashSet</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Integer</a>
               </li>
              
@@ -1291,7 +1272,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">jni</a>
+                <a href="javascript:void(0)" class="js-tag color3">HashMap</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">HashSet</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1299,11 +1284,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jni</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Thead</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">OpenVPN</a>
+                <a href="javascript:void(0)" class="js-tag color5">PPTP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1311,7 +1300,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">PPTP</a>
+                <a href="javascript:void(0)" class="js-tag color3">OpenVPN</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1331,7 +1320,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1339,11 +1328,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
               </li>
              
               <li class="article-tag-list-item">
